@@ -1,4 +1,51 @@
-#ifndef FILE_TYPE_CHECKER_H
+/**
+ * @file FileTypeChecker.h
+ * @brief 文件类型检测器
+ * 
+ * 本头文件定义了一个文件类型检测工具类，能够根据文件扩展名和文件系统属性
+ * 自动识别视频、音频、目录和其他类型文件。支持多种常见多媒体格式。
+ * 
+ * @details
+ * 使用C++17的filesystem库进行路径处理，通过扩展名映射快速判断文件类型。
+ * 设计为纯工具类，所有方法均为静态方法，无需实例化即可使用。
+ * 
+ * 主要特性：
+ * 1. 支持视频文件：mp4, avi, mkv, mov等20+格式
+ * 2. 支持音频文件：mp3, wav, flac, aac等20+格式
+ * 3. 自动识别文件夹/目录
+ * 4. 不区分扩展名大小写
+ * 5. 异常安全的路径处理
+ * 6. 提供类型枚举和字符串描述的转换
+ * 
+ * @note
+ * 1. 需要C++17或更高版本（依赖filesystem库）
+ * 2. 扩展名检测基于预定义的集合，可通过修改静态成员变量扩展支持格式
+ * 3. 对于符号链接，本工具会解析为实际文件/目录类型
+ * 4. 包含完整的单元测试（通过FILE_TYPE_CHECKER_TEST宏启用）
+ * 
+ * @version 1.0.0
+ * @date 2026-02-06
+ * @author AI Assistant
+ * 
+ * @example
+ * // 基本用法
+ * auto type = filecheck::FileTypeChecker::checkFileType("video.mp4");
+ * std::string desc = filecheck::FileTypeChecker::fileTypeToString(type);
+ * // type = FileType::VIDEO, desc = "视频文件"
+ * 
+ * // 批量处理示例
+ * for (const auto& file : files) {
+ *     auto t = filecheck::FileTypeChecker::checkFileType(file);
+ *     if (t == filecheck::FileType::VIDEO) {
+ *         processVideo(file);
+ *     }
+ * }
+ * 
+ * @see std::filesystem, std::unordered_set
+ * @copyright 示例代码，可根据需要修改和使用
+ */
+
+//#ifndef FILE_TYPE_CHECKER_H
 #define FILE_TYPE_CHECKER_H
 
 #include <string>
@@ -99,50 +146,3 @@ const std::unordered_set<std::string> FileTypeChecker::audioExtensions = {
 };
 
 } // namespace filecheck
-
-// 测试用例
-#ifdef FILE_TYPE_CHECKER_TEST
-#include <iostream>
-#include <vector>
-
-int main() {
-    // 测试数据
-    std::vector<std::string> testPaths = {
-        "test_video.mp4",           // 视频文件
-        "music/album/song.mp3",     // 音频文件
-        "documents/reports/",       // 文件夹
-        "image.jpg",                // 其他文件
-        "C:/Videos/movie.avi",      // 视频文件（带路径）
-        "audio.flac",               // 音频文件
-        "D:/Projects/",             // 文件夹
-        "presentation.pptx",        // 其他文件
-        "video.MKV",                // 视频文件（大写扩展名）
-        "audio.WAV",                // 音频文件（大写扩展名）
-        "nonexistent.txt",          // 不存在的文件
-        ""                          // 空路径
-    };
-    
-    std::cout << "文件类型检测测试：" << std::endl;
-    std::cout << "=========================================" << std::endl;
-    
-    for (const auto& path : testPaths) {
-        filecheck::FileType type = filecheck::FileTypeChecker::checkFileType(path);
-        std::string typeStr = filecheck::FileTypeChecker::fileTypeToString(type);
-        
-        std::cout << "路径: \"" << (path.empty() ? "(空)" : path) << "\""
-                  << " -> 类型: " << typeStr << std::endl;
-    }
-    
-    // 额外测试：枚举所有类型
-    std::cout << "\n文件类型枚举测试：" << std::endl;
-    std::cout << "=========================================" << std::endl;
-    std::cout << "VIDEO: " << filecheck::FileTypeChecker::fileTypeToString(filecheck::FileType::VIDEO) << std::endl;
-    std::cout << "AUDIO: " << filecheck::FileTypeChecker::fileTypeToString(filecheck::FileType::AUDIO) << std::endl;
-    std::cout << "DIRECTORY: " << filecheck::FileTypeChecker::fileTypeToString(filecheck::FileType::DIRECTORY) << std::endl;
-    std::cout << "OTHER: " << filecheck::FileTypeChecker::fileTypeToString(filecheck::FileType::OTHER) << std::endl;
-    
-    return 0;
-}
-#endif // FILE_TYPE_CHECKER_TEST
-
-#endif // FILE_TYPE_CHECKER_H

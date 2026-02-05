@@ -2,9 +2,10 @@
 #include <cstdio>
 #include <string>
 #include "ffmpeg_tools.h"
-
-#include "Path_checker.h"
+#include "SettingsManager.h"
 using namespace std;
+SettingsManager settings;
+
 void dividing_line(int length = 0)
 {
     if (length <= 0)
@@ -131,13 +132,12 @@ int main()
     switch (choice)
     {
     case 1:
+        cout << "You selected ffmpeg tools." << endl;
         if (ffmpeg_tools() != 0)
         {
             cout << "ffmpeg tools encountered an error." << endl;
             return 1;
         }
-        cout << "You selected ffmpeg tools." << endl;
-        // Add ffmpeg tools functionality here
         break;
     case 2:
         cout << "You selected MinGW tools." << endl;

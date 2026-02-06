@@ -151,10 +151,12 @@ SettingsManager settings("myapp_config.ini");
 
 ### 获取所有配置
 
-    auto keys = settings.getAllKeys();
-    for (const auto& key : keys) {
-        std::cout << key << " = " << settings.getString(key) << std::endl;
-    }
+```c++
+auto keys = settings.getAllKeys();
+for (const auto& key : keys) {
+    std::cout << key << " = " << settings.getString(key) << std::endl;
+}
+```
 
 错误处理
 ----

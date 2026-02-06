@@ -2,11 +2,11 @@
 #include <cstdio>
 #include <string>
 #include "ffmpeg_tools.h"
-#include "SettingsManager.h"
+//#include "SettingsManager.h"
 using namespace std;
-SettingsManager settings;
 
-void dividing_line(int length = 0)
+//SettingsManager settings;
+/*void dividing_line(int length = 0)
 {
     if (length <= 0)
     {
@@ -20,7 +20,9 @@ void dividing_line(int length = 0)
         }
     }
     cout << endl;
-}
+}*/
+
+
 int check_ffmpeg_version(bool full_output = false)
 {
     cout << "Checking ffmpeg version..." << endl;
@@ -61,6 +63,7 @@ int check_ffmpeg_version(bool full_output = false)
     }
     return 0;
 }
+
 int ffmpeg_tools()
 {
     if (check_ffmpeg_version() != 0)

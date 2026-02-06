@@ -67,8 +67,10 @@ private:
         defaultSettings["theme"] = "dark";
         defaultSettings["font_size"] = "14";
         */
-        defaultSettings["full_output"] = "false";
-        
+        defaultSettings["full_output"] = "false";//完整输出
+        defaultSettings["app.version"] = "0.0.2";//版本信息
+        defaultSettings["ffmpeg.path"] = "ffmpeg";//ffmpeg路径
+        defaultSettings["isExecutionConfirmed"] = "true";//执行确认
     }
 
 public:

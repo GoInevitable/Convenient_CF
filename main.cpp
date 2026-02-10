@@ -1,123 +1,23 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
-#include "ffmpeg_tools.h"
+#include "ffmpeg_tool.h"
 //#include "SettingsManager.h"
+// 配置管理已在头文件中定义为 `SettingsManager settings;`
 using namespace std;
 
-//SettingsManager settings;
-/*void dividing_line(int length = 0)
-{
-    if (length <= 0)
-    {
-        cout << "------------------------------------------------------------------";
-    }
-    else
-    {
-        for (int i = 0; i < length; i++)
-        {
-            cout << "-";
-        }
-    }
-    cout << endl;
-}*/
-
-
-int check_ffmpeg_version(bool full_output = false)
-{
-    cout << "Checking ffmpeg version..." << endl;
-    const char *command = "ffmpeg -version";
-    FILE *pipe = _popen(command, "r");
-    if (!pipe)
-    {
-        std::cerr << "Failed to execute command." << std::endl;
-        return 1;
-    }
-    char buffer[128];
-    std::string result;
-    while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
-    {
-        result += buffer;
-    }
-    int exitStatus = _pclose(pipe);
-    if (exitStatus != 0)
-    {
-        cerr << "Command execution failed with exit status: " << exitStatus << endl;
-        return 1;
-    }
-    if (full_output)
-    {
-        cout << "Full output of ffmpeg version command:" << endl;
-        dividing_line(100);
-        cout << result << endl;
-        dividing_line(100);
-    }
-    else
-    {
-        for (int i = 0;; i++)
-        {
-            cout << result[i];
-            if (result[i] == '\n')
-                break;
-        }
-    }
-    return 0;
-}
-
-int ffmpeg_tools()
-{
-    if (check_ffmpeg_version() != 0)
-    {
-        cout << "Error: ffmpeg is not installed or not accessible." << endl;
-        return 1;
-    }
-    cout << "1.ffmpeg version" << endl
-         << "2.convert video format" << endl
-         << "3.extract audio from video" << endl
-         << "4.merge videos" << endl
-         << "5.return to main menu" << endl;
-    cout << "Please enter your choice (1-5): ";
-    int choice;
-    cin >> choice;
-    dividing_line();
-    switch (choice)
-    {
-    case 1:
-        cout << "ffmpeg version 4.4.1" << endl;
-        if (check_ffmpeg_version(true) != 0)
-        {
-            cout << "Error: ffmpeg is not installed or not accessible." << endl;
-            return 1;
-        }
-        break;
-    case 2:
-        cout << "Converting video format..." << endl;
-        Converting_video_format();
-        break;
-    case 3:
-        cout << "Extracting audio from video..." << endl;
-        // Add audio extraction functionality here
-        break;
-    case 4:
-        cout << "Merging videos..." << endl;
-        // Add video merging functionality here
-        break;
-    case 5:
-        cout << "Returning to main menu..." << endl;
-        break;
-    default:
-        cout << "Invalid choice. Please try again." << endl;
-    }
-    return 0;
-}
 int mingw_tools()
 {
     // Placeholder for MinGW tools functionality
+    // 等待用户查看信息并返回上一级菜单
+    // wait_return_to_previous_menu();
     return 0;
 }
 int other_tools()
 {
-    // Placeholder for other tools functionality
+    cout << "Other tools functionality is under development." << endl;
+    // 等待用户查看信息并返回上一级菜单
+    // wait_return_to_previous_menu();
     return 0;
 }
 int main()
@@ -151,8 +51,8 @@ int main()
         // Add other tools functionality here
         break;
     case 4:
-        about_this();
-        //cout << "Convenient_CF is a toolset developed by Jane Smith to simplify various tasks." << endl;
+        //about_this();
+        // cout << "Convenient_CF is a toolset developed by Jane Smith to simplify various tasks." << endl;
         break;
     case 5:
         cout << "Exiting the program. Goodbye!" << endl;

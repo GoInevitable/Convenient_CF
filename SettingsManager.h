@@ -4,7 +4,6 @@
  * @details 提供简单的INI格式配置文件的读取和保存功能，支持硬编码的默认配置
  * @author AI Assistant
  */
-
 #ifndef SETTINGS_MANAGER_H
 #define SETTINGS_MANAGER_H
 
@@ -68,9 +67,10 @@ private:
         defaultSettings["font_size"] = "14";
         */
         defaultSettings["full_output"] = "false";//完整输出
-        defaultSettings["app.version"] = "0.0.2";//版本信息
+        defaultSettings["app.version"] = "0.0.1";//版本信息
         defaultSettings["ffmpeg.path"] = "ffmpeg";//ffmpeg路径
         defaultSettings["isExecutionConfirmed"] = "true";//执行确认
+        defaultSettings["work_path.video_path"] = "HAVE_NOT_SETTING";//工作路径
     }
 
 public:

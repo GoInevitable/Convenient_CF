@@ -8,7 +8,7 @@ using namespace std;
 /**
  * @brief 从控制台读取单个文件路径的函数
  * 
- * @param prompt 用户提示信息，默认"Please enter the file path:"
+ * @param prompt 用户提示信息，默认"请输入文件路径："
  * @param max_attempts 最大尝试次数，默认3次
  * @return string 用户输入的文件路径
  * 
@@ -18,7 +18,7 @@ using namespace std;
  * 3. 提供最大尝试次数限制
  * 4. 处理EOF（文件结束）情况
  */
-string single_file_chooser(const string& prompt = "Please enter the file path:", int max_attempts = 3) {
+string single_file_chooser(const string& prompt = "请输入文件路径：", int max_attempts = 3) {
     string file_path;
     int attempts = 0;
     
@@ -32,7 +32,7 @@ string single_file_chooser(const string& prompt = "Please enter the file path:",
         
         // 检查是否输入流结束
         if (cin.eof()) {
-            cout << "\nInput terminated (EOF). Returning empty string." << endl;
+            cout << "\n输入已终止（EOF）。返回空字符串。" << endl;
             return "";
         }
         
@@ -42,10 +42,10 @@ string single_file_chooser(const string& prompt = "Please enter the file path:",
             // 空输入
             attempts++;
             if (attempts < max_attempts) {
-                cout << "Input cannot be empty. Please try again. (" 
-                      << max_attempts - attempts << " attempts remaining)" << endl;
+                cout << "输入不能为空，请重试。还可尝试 "
+                      << max_attempts - attempts << " 次" << endl;
             } else {
-                cout << "Maximum attempts reached. Process terminated." << endl;
+                cout << "达到最大尝试次数，终止输入。" << endl;
             }
             continue;
         }
@@ -56,7 +56,7 @@ string single_file_chooser(const string& prompt = "Please enter the file path:",
         
         if (!trimmed_input.empty()) {
             file_path = trimmed_input;
-            cout << "File path accepted: " << file_path << endl;
+            cout << "已接受文件路径：" << file_path << endl;
             return file_path;
         }
     }
@@ -77,13 +77,13 @@ string single_file_chooser(const string& prompt = "Please enter the file path:",
  * 4. 处理EOF（文件结束）情况
  * 5. 返回输入的文件路径向量
  */
-vector<string> multi_file_chooser(const string& prompt = "Please enter file paths:") {
+vector<string> multi_file_chooser(const string& prompt = "请输入文件路径（每行一个）：") {
     vector<string> file_paths;
     string input;
     
     // 显示主提示信息
     cout << prompt << endl;
-    cout << "Enter file paths (one per line). Press Enter on an empty line to finish:" << endl;
+    cout << "按回车输入空行结束输入（每行填写一个路径）：" << endl;
     
     int count = 1;
     
@@ -94,7 +94,7 @@ vector<string> multi_file_chooser(const string& prompt = "Please enter file path
         
         // 检查是否输入流结束
         if (cin.eof()) {
-            cout << "\nInput terminated (EOF)." << endl;
+            cout << "\n输入已终止（EOF）。" << endl;
             break;
         }
         
@@ -103,9 +103,9 @@ vector<string> multi_file_chooser(const string& prompt = "Please enter file path
         if (start == string::npos) {
             // 空行或只包含空白字符，结束输入
             if (file_paths.empty()) {
-                cout << "No files entered. Process terminated." << endl;
+                cout << "未输入任何文件，已终止。" << endl;
             } else {
-                cout << "Finished entering " << file_paths.size() << " file(s)." << endl;
+                cout << "已完成，输入了 " << file_paths.size() << " 个文件。" << endl;
             }
             break;
         }
@@ -136,7 +136,7 @@ vector<string> multi_file_chooser(const string& prompt = "Please enter file path
  * 3. 提供向后兼容性
  */
 vector<string> file_chooser(bool allow_multiple_inputs = false, 
-                           const string& prompt = "Please enter the file path:") {
+                           const string& prompt = "请输入文件路径：") {
     vector<string> result;
     
     if (allow_multiple_inputs) {

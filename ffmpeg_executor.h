@@ -20,7 +20,9 @@
 
 #ifdef _WIN32
 // 定义这些宏来避免Windows头文件中的一些冲突
+#ifndef NOMINMAX
 #define NOMINMAX           // 避免min/max宏冲突
+#endif
 #define WIN32_LEAN_AND_MEAN // 排除不常用的Windows服务
 #include <windows.h>
 #undef ERROR               // 避免与日志宏冲突

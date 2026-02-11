@@ -1,0 +1,11 @@
+{
+    // 在集成终端中默认使用 UTF-8 (chcp 65001)，并将默认文件编码设置为 utf8
+    "terminal.integrated.profiles.windows": {
+        "PowerShell-utf8": {
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "args": ["-NoExit", "-Command", "chcp 65001"]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell-utf8",
+    "files.encoding": "utf8"
+}

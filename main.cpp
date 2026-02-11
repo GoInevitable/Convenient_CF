@@ -2,7 +2,8 @@
 #include <cstdio>
 #include <string>
 #include "ffmpeg_tool.h"
-//#include "SettingsManager.h"
+#include "SettingsManager.h"
+//SettingsManager settings;
 // 配置管理已在头文件中定义为 `SettingsManager settings;`
 using namespace std;
 
@@ -22,14 +23,15 @@ int other_tools()
 }
 int main()
 {
+main_menu:
     cout << "Convenient_CF v0.0.1 by Jane Smith" << endl
          << "1.ffmpeg tools" << endl
          << "2.MinGW tools" << endl
          << "3.Other tools" << endl
-         << "4.about" << endl
+         << "4.Restore Defaults" << endl
          << "5.exit" << endl;
     cout << "Please enter your choice (1-5): ";
-    int choice;
+    int choice = 0;
     cin >> choice;
     dividing_line();
     switch (choice)
@@ -51,9 +53,11 @@ int main()
         // Add other tools functionality here
         break;
     case 4:
-        //about_this();
-        // cout << "Convenient_CF is a toolset developed by Jane Smith to simplify various tasks." << endl;
-        break;
+        settings.restoreDefaults();
+        settings.save();
+        cout << "Settings have been restored to default values." << endl;
+        goto main_menu;
+        //break;
     case 5:
         cout << "Exiting the program. Goodbye!" << endl;
         break;

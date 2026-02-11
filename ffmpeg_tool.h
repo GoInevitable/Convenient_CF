@@ -136,8 +136,11 @@ int ffmpeg_tools()
         cout << "视频工作路径未设置，请先在配置文件中设置 work_path.video_path 的值。" << endl;
         string work_path;
         cout << "请输入视频工作路径：";
-        cin >> work_path;
+        //cin >> work_path;
+        cin.ignore();
         getline(cin, work_path);
+        
+        cout<<work_path<<endl;
         settings.setString("work_path.video_path", work_path);
         settings.save();
     }

@@ -3,8 +3,8 @@
 #include <string>
 #include "ffmpeg_tool.h"
 #include "SettingsManager.h"
-//SettingsManager settings;
-// 配置管理已在头文件中定义为 `SettingsManager settings;`
+// SettingsManager settings;
+//  配置管理已在头文件中定义为 `SettingsManager settings;`
 using namespace std;
 
 int mingw_tools()
@@ -57,7 +57,7 @@ main_menu:
         settings.save();
         cout << "Settings have been restored to default values." << endl;
         goto main_menu;
-        //break;
+        // break;
     case 5:
         cout << "Exiting the program. Goodbye!" << endl;
         break;

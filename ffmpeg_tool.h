@@ -9,61 +9,113 @@ using namespace std;
 SettingsManager settings;
 
 std::vector<std::string> videoFiles;
-int GetViedoPath() {
+int GetViedoPath()
+{
     // 获取工作目录
     std::string videoPath = settings.getString("work_path.video_path");
-    
+
     // 检查目录是否存在
-    if (!std::filesystem::exists(videoPath)) {
+    if (!std::filesystem::exists(videoPath))
+    {
         std::cout << "错误：视频目录不存在 - " << videoPath << std::endl;
         return -1;
     }
-    
-    if (!std::filesystem::is_directory(videoPath)) {
+
+    if (!std::filesystem::is_directory(videoPath))
+    {
         std::cout << "错误：路径不是目录 - " << videoPath << std::endl;
         return -1;
     }
-    
-    
-    
-    try {
+
+    try
+    {
         // 遍历目录中的所有文件
-        for (const auto& entry : std::filesystem::directory_iterator(videoPath)) {
-            if (entry.is_regular_file()) {
+        for (const auto &entry : std::filesystem::directory_iterator(videoPath))
+        {
+            if (entry.is_regular_file())
+            {
                 std::string filePath = entry.path().string();
-                
+
                 // 使用Path_checker检测文件类型
                 filecheck::FileType fileType = filecheck::FileTypeChecker::checkFileType(filePath);
-                
+
                 // 如果是视频文件，添加到数组
-                if (fileType == filecheck::FileType::VIDEO) {
+                if (fileType == filecheck::FileType::VIDEO)
+                {
                     videoFiles.push_back(filePath);
                     std::cout << "找到视频文件: " << entry.path().filename() << std::endl;
                 }
             }
         }
-        
+
         // 输出结果统计
         std::cout << "共找到 " << videoFiles.size() << " 个视频文件" << std::endl;
-        
-        // 这里可以添加后续的视频格式转换逻辑
-        // for (const auto& videoFile : videoFiles) {
-        //     // 转换视频格式的代码
-        // }
-        
-    } catch (const std::filesystem::filesystem_error& ex) {
+    }
+    catch (const std::filesystem::filesystem_error &ex)
+    {
         std::cout << "文件系统错误: " << ex.what() << std::endl;
         return -1;
-    } catch (const std::exception& ex) {
+    }
+    catch (const std::exception &ex)
+    {
         std::cout << "错误: " << ex.what() << std::endl;
         return -1;
     }
-    
     return 0;
 }
-
+int GetWorkPath(bool isRefresh = false)
+{
+    string work_path;
+    cout << "请输入视频工作路径：";
+    cin.ignore();
+    getline(cin, work_path);
+    cout << work_path << endl;
+    settings.setString("work_path.video_path", work_path);
+    settings.save();
+    if (isRefresh)
+    {
+        if (GetViedoPath() != 0)
+        {
+            cout << "获取视频路径失败，请检查配置文件中的 work_path.video_path 设置。" << endl;
+            return 1;
+        }
+    }
+    return 0;
+}
 int Converting_video_format()
 {
+    if (videoFiles.empty())
+    {
+        cout << "在" << settings.getString("work_path.video_path") << "中无视频文件," << endl;
+        cout << "按1重新设置并刷新路径失败，按2刷新文件列表，按3退出" << endl;
+        int choice;
+        cin >> choice;
+        if (choice == 1)
+        {
+            if (GetWorkPath(true) != 0)
+            {
+                cout << "重新设置路径" << endl;
+                return 1;
+            }
+        }
+        else if (choice == 2)
+        {
+            if (GetViedoPath() != 0)
+            {
+                cout << "刷新文件列表失败，请检查配置文件中的 work_path.video_path 设置。" << endl;
+                return 1;
+            }
+        }
+        else if (choice == 3)
+        {
+            cout << "退出视频格式转换。" << endl;
+            return 1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
     
     return 0;
 }
@@ -134,23 +186,34 @@ int ffmpeg_tools()
     if (settings.getString("work_path.video_path") == "HAVE_NOT_SETTING")
     {
         cout << "视频工作路径未设置，请先在配置文件中设置 work_path.video_path 的值。" << endl;
-        string work_path;
-        cout << "请输入视频工作路径：";
-        //cin >> work_path;
-        cin.ignore();
-        getline(cin, work_path);
-        
-        cout<<work_path<<endl;
-        settings.setString("work_path.video_path", work_path);
-        settings.save();
+        return GetWorkPath(true);
     }
     cout << "视频工作路径已设置为: " << settings.getString("work_path.video_path") << endl;
-    if(GetViedoPath() != 0)
+    if (GetViedoPath() != 0)
     {
         cout << "获取视频路径失败，请检查配置文件中的 work_path.video_path 设置。" << endl;
-        return 1;
+        cout << "是否重新设置路径[y/N]" << endl;
+        char choice1;
+        cin >> choice1;
+        if (choice1 == 'y' || choice1 == 'Y')
+        {
+            string work_path;
+            cout << "请输入视频工作路径：";
+            cin.ignore();
+            getline(cin, work_path);
+            settings.setString("work_path.video_path", work_path);
+            settings.save();
+            if (GetViedoPath() != 0)
+            {
+                cout << "获取视频路径失败，请检查配置文件中的 work_path.video_path 设置。" << endl;
+                return 1;
+            }
+        }
+        else
+        {
+            return 1;
+        }
     }
-    
     cout << "1. 查看 ffmpeg 版本" << endl
          << "2. 转换视频格式" << endl
          << "3. 从视频中提取音频" << endl
